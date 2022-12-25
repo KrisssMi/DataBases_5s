@@ -166,9 +166,9 @@ begin
    RAISE_APPLICATION_ERROR (-20000, 'Do not drop table ' || ORA_DICT_OBJ_TYPE || ' ' || ORA_DICT_OBJ_NAME);
 end;
 
---alter trigger trigger12 disable;
+--alter trigger trig12 disable;
 
--- 13.	Удалите (drop) таблицу AUDIT. Просмотрите состояние триггеров с помощью SQL-DEVELOPER. Объясните результат. Измените триггеры.
+-- 13.	Удалите (drop) таблицу AUDIT. Просмотрите состояние триггеров с помощью SQL-DEVELOPER. Измените триггеры.
 drop table Audit1;
 select * from user_triggers;
 
@@ -177,7 +177,7 @@ select * from user_triggers;
 create view v1 as select * from MKVTable;
 select * from v1;
 
-create or replace trigger trig13
+create or replace trigger trigger13
 instead of insert on v1
 for each row
 begin
@@ -188,12 +188,17 @@ begin
 end;
 commit;
 
-insert into v1(id, name) values (15, 'value_15');
+drop trigger trig11;
+commit;
+
+insert into v1(id, name) values (18, 'value_18');
 select * from MKVTable;
 select * from v1;
 rollback;
 
+delete from MKVTable where id = 18;
+commit;
 drop view v1;
 
--- 15.	Продемонстрируйте, в каком порядке выполняются триггеры.
+-- 15.	В каком порядке выполняются триггеры.
 select * from Audit1;
